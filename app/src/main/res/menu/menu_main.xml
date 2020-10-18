@@ -1,0 +1,32 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".activity.SearchActivity">
+
+    <!-- this is for settings, that includes two section:
+    one for ordering the items based of chronological order, age experience, etc...
+    The Second section is for logging out from app, and modifying the data with an Activity that
+    "has the shape" of the register fragment-->
+
+    <item
+        android:id="@+id/action_settings"
+        android:icon="@drawable/ic_setting_name"
+        android:orderInCategory="100"
+        android:title="@string/action_settings"
+        app:showAsAction="always"
+        >
+        <menu>
+            <item android:id="@+id/create_new"
+                android:title="@string/create_new" />
+            <item android:id="@+id/logout"
+                android:title="@string/open" />
+        </menu>
+    </item>
+    <item
+        android:id="@+id/action_search"
+        android:icon="@drawable/ic_search_black_24dp"
+        android:orderInCategory="100"
+        android:title="@string/action_search"
+        app:showAsAction="always"
+        app:actionViewClass="android.support.v7.widget.SearchView" />
+</menu>
