@@ -44,12 +44,12 @@ public class Contact implements Comparable<Contact> {
 
 
     }
-    public Contact(String name, String image, /*String phone,*/ String surname, /*String gender,*/
+    public Contact(String name, String image, String phone, String surname, String gender,
                    String birthDate, String fromPlace, String work,
                    String workExp, String mail){
         this.name = name;
         this.image = image;
-/*        this.phone = phone;*/
+        this.phone = phone;
         this.surname = surname;
         this.gender = gender;
         this.birthDate = birthDate;

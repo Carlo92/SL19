@@ -8,6 +8,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
 import android.view.View;
+import com.github.javiersantos.appupdater.AppUpdater;
 import com.project.scambiolavoro.R;
 import com.project.scambiolavoro.fragment.LoginFragment;
 import com.project.scambiolavoro.fragment.RegisterFragment;
@@ -30,6 +31,9 @@ public class MainActivity extends AppCompatActivity {
         pagerAdapter.addFragmet(new LoginFragment());
         pagerAdapter.addFragmet(new RegisterFragment());
         viewPager.setAdapter(pagerAdapter);
+
+        AppUpdater appUpdater = new AppUpdater(this);
+        appUpdater.start();
 
 
     }

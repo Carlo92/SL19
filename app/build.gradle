@@ -56,5 +56,10 @@ dependencies {
     implementation files ('libs/sendgrid-0.1.2-jar.jar')
     implementation 'com.squareup.okhttp3:okhttp:4.5.0'
 
+    //AppUpdater:updating in app
+
+    implementation 'com.github.javiersantos:AppUpdater:2.7'
+
+
 
 }

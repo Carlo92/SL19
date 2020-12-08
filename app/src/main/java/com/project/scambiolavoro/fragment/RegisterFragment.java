@@ -1,8 +1,11 @@
 package com.project.scambiolavoro.fragment;
 
 
+import android.Manifest;
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.icu.util.Calendar;
 import android.net.Uri;
@@ -10,7 +13,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +37,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.project.scambiolavoro.GetPhoneNumber;
 import com.project.scambiolavoro.ImagePicker;
 import com.project.scambiolavoro.R;
 import com.project.scambiolavoro.activity.SearchActivity;
@@ -41,6 +48,7 @@ import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import static android.Manifest.permission.*;
 import static android.app.Activity.RESULT_CANCELED;
 import static com.android.volley.VolleyLog.TAG;
 
@@ -63,6 +71,77 @@ public class RegisterFragment extends Fragment {
     private Bitmap bitmap;
     private byte[] myByt;
 
+    String TAG = "PhoneActivityTAG";
+    //Activity activity = PhoneActivity.this; use instead getActivity
+    String wantPermission = Manifest.permission.READ_PHONE_STATE;
+    private static final int PERMISSION_REQUEST_CODE = 1;
+
+    //declare all fields
+    private EditText name;
+    private EditText surname;
+    private DropDown gender;
+    private EditText birthDate;
+    private EditText fromPlace;
+    private EditText work;
+    private EditText workExp;
+    private EditText workPlace;
+    private EditText mobile;
+
+    private EditText mail;
+
+    private EditText pwd;
+    private EditText repwd;
+    private TextView photo;
+    private ImageView imageView;
+    private Button register;
+
+
+
+    private String getPhone() {
+        TelephonyManager phoneMgr = (TelephonyManager) this.getActivity().getSystemService(Context.TELEPHONY_SERVICE);
+        if (ActivityCompat.checkSelfPermission(getActivity(), wantPermission) != PackageManager.PERMISSION_GRANTED) {
+            return "";
+        }
+        return phoneMgr.getLine1Number();
+    }
+
+    private void requestPermission(String permission){
+        if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), permission)){
+            Toast.makeText(getActivity(), "Phone state permission allows us to get phone number. Please allow it for additional functionality.", Toast.LENGTH_LONG).show();
+        }
+        ActivityCompat.requestPermissions(getActivity(), new String[]{permission},PERMISSION_REQUEST_CODE);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case PERMISSION_REQUEST_CODE:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Log.d(TAG, "Phone number: " + getPhone());
+                } else {
+                    Toast.makeText(getActivity(),"Permission Denied. We can't get phone number.", Toast.LENGTH_LONG).show();
+                }
+                break;
+        }
+    }
+
+    private boolean checkPermission(String permission){
+        if (Build.VERSION.SDK_INT >= 23) {
+            int result = ContextCompat.checkSelfPermission(getActivity(), permission);
+            if (result == PackageManager.PERMISSION_GRANTED){
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return true;
+        }
+    }
+    //
+
+
+
+
 
     private static final int PICK_IMAGE_ID = 234; // the number doesn't matter
     // [END declare_auth]
@@ -79,11 +158,11 @@ public class RegisterFragment extends Fragment {
 
         // Define all variables
         // Name
-        final EditText name = view.findViewById(R.id.et_name);
+        name = view.findViewById(R.id.et_name);
         // Surname
-        final EditText surname = view.findViewById(R.id.et_surname);
+        surname = view.findViewById(R.id.et_surname);
         // Gender
-        final DropDown gender = view.findViewById(R.id.gender);
+        gender = view.findViewById(R.id.gender);
 
         // Dropdown arraylist. Two genders: male and female
 
@@ -92,6 +171,7 @@ public class RegisterFragment extends Fragment {
         ArrayList<String> gendercases = new ArrayList<>();
         gendercases.add("Uomo");
         gendercases.add("Donna");
+        gendercases.add(getPhone());
 
         // Set Options to gender defined earlier
         gender.setOptions(gendercases);
@@ -99,37 +179,63 @@ public class RegisterFragment extends Fragment {
         //Something about my Dropdown ahahah ;)
 
         // Birthday
-        final EditText birthDate = view.findViewById(R.id.birthdate);
+        birthDate = view.findViewById(R.id.birthdate);
 
         // From Place
 
-        final EditText fromPlace = view.findViewById(R.id.fromPlace);
+        fromPlace = view.findViewById(R.id.fromPlace);
 
         // work
 
-        final EditText work = view.findViewById(R.id.work);
+        work = view.findViewById(R.id.work);
+//        work.setText("Falegname");
 
         // work Experience
 
-        final EditText workExp = view.findViewById(R.id.workExp);
+        workExp = view.findViewById(R.id.workExp);
+
+        // workPlace
+
+        workPlace = view.findViewById(R.id.workPlace);
 
         // mail
 
-        final EditText mail = view.findViewById(R.id.et_email);
+        mail = view.findViewById(R.id.et_email);
+
+        mobile = view.findViewById(R.id.et_phone);
+
+
+        // mobile
+
+    //    phone = view.findViewById(R.id.phone);
+
+        mobile.setText(getPhone());
+
+
+       /* if (mPhoneNumber != null) {
+            phone.setText(mPhoneNumber);
+        }
+        else
+            phone.setText("333");*/
+
+       // phone.setText(mPhoneNumber);
+
+
+      //  phone.setText(new GetPhoneNumber.askPe);
 
         // Password
 
-        final EditText pwd = view.findViewById(R.id.et_password);
+        pwd = view.findViewById(R.id.et_password);
 
         // Confirm Password
 
-        final EditText repwd = view.findViewById(R.id.et_repassword);
+        repwd = view.findViewById(R.id.et_repassword);
 
 
         // take photo
-        final TextView photo = view.findViewById(R.id.photo);
+        photo = view.findViewById(R.id.photo);
 
-        final ImageView imageView = view.findViewById(R.id.thumbnail2);
+        imageView = view.findViewById(R.id.thumbnail2);
 
         birthDate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
@@ -190,18 +296,16 @@ public class RegisterFragment extends Fragment {
         });
 
 
-        final Button register = view.findViewById(R.id.btn_register);
+        register = view.findViewById(R.id.btn_register);
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendData(name, mail, pwd);
-
-               /* if (validateData(name, surname,
+              if (validateData(name, surname,
                         gender, birthDate,
                         fromPlace, work, workExp,
                         mail, pwd, repwd)) {
-                    sendData(mail, pwd);
-                }*/
+                    sendData(name, mail, pwd);
+                }
 
 
             }
@@ -216,6 +320,11 @@ public class RegisterFragment extends Fragment {
                                      }
                                  }
         );
+
+
+
+
+
 
 
         return view;
@@ -251,6 +360,8 @@ public class RegisterFragment extends Fragment {
         }
     }
 
+
+
     private byte[] imageToByte(Bitmap bitmap) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
@@ -268,9 +379,9 @@ public class RegisterFragment extends Fragment {
         String nameGot = name.getText().toString().trim();
         String surnameGot = surname.getText().toString().trim();
         String genderGot = gender.getText().toString().trim();
-
-        System.out.println(genderGot);
         String birthDateGot = birthDate.getText().toString().trim();
+        String fromPlaceGot = fromPlace.getText().toString().trim();
+        String workGot = work.getText().toString().trim();
         String pwdGot = pwd.getText().toString().trim();
         String repwdGot = repwd.getText().toString().trim();
 
@@ -278,7 +389,7 @@ public class RegisterFragment extends Fragment {
 
 
         if (nameGot.isEmpty() || surnameGot.isEmpty() || genderGot.isEmpty() || emailInput.isEmpty() ||
-                birthDateGot.isEmpty() || pwdGot.isEmpty() || repwdGot.isEmpty() || (!pwdGot.equals(repwdGot))) {
+                birthDateGot.isEmpty() || fromPlaceGot.isEmpty() || workGot.isEmpty() || pwdGot.isEmpty() || repwdGot.isEmpty() || (!pwdGot.equals(repwdGot))) {
 
             if (nameGot.isEmpty()) {
 
@@ -298,9 +409,14 @@ public class RegisterFragment extends Fragment {
             if (birthDateGot.isEmpty()) {
 
                 birthDate.setError("Inserire la Data di Nascita");
-            } else {
-                birthDate.setError(null);
             }
+            if (fromPlaceGot.isEmpty()) {
+                fromPlace.setError("Inserire il luogo di provenienza");
+            }
+            if (workGot.isEmpty()) {
+                work.setError("Inserisci il Tuo Lavoro");
+            }
+
 
 
             //Here there is the Birthdate that can't be from the future
@@ -351,6 +467,7 @@ public class RegisterFragment extends Fragment {
                             // Here you can continue your bond with Second Activity
 
                             final String gid = user.getUid();
+                            final String phoneGot = user.getPhoneNumber();
 
 
                             //generate key for the user that must be unique and the same for database and photo in storage
@@ -367,7 +484,7 @@ public class RegisterFragment extends Fragment {
                                         @Override
                                         public void onSuccess(Uri uri) {
 
-                                            Contact contact = new Contact(nameGot, uri.toString(), "3333333333");
+                                            Contact contact = new Contact(nameGot, uri.toString(), phoneGot);
                                             dbRef.child(gid).setValue(contact);
                                             Intent myIntent = new Intent(getActivity(), SearchActivity.class);
                                             getActivity().startActivity(myIntent);
@@ -399,6 +516,8 @@ public class RegisterFragment extends Fragment {
 
 
     }
+
+
 
 
 }

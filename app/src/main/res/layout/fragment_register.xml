@@ -45,7 +45,7 @@
             android:background="@drawable/et_custom"
             android:fontFamily="@font/roboto_regular"
             android:hint="@string/name"
-            android:inputType="textPersonName"
+            android:inputType="phone"
             android:padding="15dp"
             android:singleLine="true"
             android:textSize="15sp" />
@@ -116,7 +116,7 @@
             android:background="@drawable/et_custom"
             android:fontFamily="@font/roboto_regular"
             android:hint="@string/work"
-            android:inputType="textPersonName"
+            android:inputType="text"
             android:padding="15dp"
             android:textSize="15sp" />
 
@@ -130,7 +130,7 @@
             android:background="@drawable/et_custom"
             android:fontFamily="@font/roboto_regular"
             android:hint="@string/workExperience"
-            android:inputType="textPersonName"
+            android:inputType="text"
             android:padding="15dp"
             android:textSize="15sp" />
 
@@ -148,6 +148,19 @@
             android:padding="15dp"
             android:textSize="15sp" />
 
+        <EditText
+            android:id="@+id/et_phone"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/et_custom"
+            android:fontFamily="@font/roboto_regular"
+            android:hint="@string/workPlace"
+            android:inputType="phone"
+            android:padding="15dp"
+            android:textSize="15sp" />
 
         <EditText
             android:id="@+id/et_email"

@@ -127,4 +127,6 @@
     <string name="pick_image_intent_text">Seleziona una delle tre opzioni</string>
     <string name="create_new">ordina</string>
     <string name="open">Log Out</string>
+    <string name="mobilephone">Numero di telefono (comprensivo di +39 se italiano)</string>
+    <string name="phone">Inserisci il tuo numero</string>
 </resources>
