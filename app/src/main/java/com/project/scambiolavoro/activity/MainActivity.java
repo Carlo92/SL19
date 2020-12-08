@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import android.view.View;
 import com.github.javiersantos.appupdater.AppUpdater;
+import com.github.javiersantos.appupdater.enums.UpdateFrom;
 import com.project.scambiolavoro.R;
 import com.project.scambiolavoro.fragment.LoginFragment;
 import com.project.scambiolavoro.fragment.RegisterFragment;
@@ -32,7 +33,9 @@ public class MainActivity extends AppCompatActivity {
         pagerAdapter.addFragmet(new RegisterFragment());
         viewPager.setAdapter(pagerAdapter);
 
-        AppUpdater appUpdater = new AppUpdater(this);
+        AppUpdater appUpdater = new AppUpdater(this)
+                .setUpdateFrom(UpdateFrom.GITHUB)
+                .setGitHubUserAndRepo("Carlo92","SL19");
         appUpdater.start();
 
 
