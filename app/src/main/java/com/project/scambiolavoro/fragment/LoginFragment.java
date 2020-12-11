@@ -13,6 +13,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+import com.github.javiersantos.appupdater.AppUpdater;
+import com.github.javiersantos.appupdater.AppUpdaterUtils;
+import com.github.javiersantos.appupdater.enums.AppUpdaterError;
+import com.github.javiersantos.appupdater.enums.Display;
+import com.github.javiersantos.appupdater.enums.UpdateFrom;
+import com.github.javiersantos.appupdater.objects.Update;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -80,6 +86,15 @@ public class LoginFragment extends Fragment {
             }
 
         });
+
+
+        AppUpdater appUpdater = new AppUpdater(getContext());
+        appUpdater.setUpdateFrom(UpdateFrom.GITHUB)
+                .setGitHubUserAndRepo("Carlo92", "SL19")
+                .setDisplay(Display.DIALOG)
+                .showAppUpdated(true)
+                .start();
+
         return view;
     }
 }

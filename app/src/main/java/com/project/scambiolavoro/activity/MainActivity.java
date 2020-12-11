@@ -33,10 +33,7 @@ public class MainActivity extends AppCompatActivity {
         pagerAdapter.addFragmet(new RegisterFragment());
         viewPager.setAdapter(pagerAdapter);
 
-        AppUpdater appUpdater = new AppUpdater(this)
-                .setUpdateFrom(UpdateFrom.GITHUB)
-                .setGitHubUserAndRepo("Carlo92","SL19");
-        appUpdater.start();
+
 
 
     }
