@@ -76,7 +76,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.MyView
     public void onBindViewHolder(MyViewHolder holder, final int position) {
         final Contact contact = contactListFiltered.get(position);
         holder.name.setText(contact.getName());
-        holder.phone.setText(contact.getPhone());
+        holder.phone.setText(contact.getWork());
 
         Glide.with(context)
                 .load(contact.getImage())
@@ -89,6 +89,8 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.MyView
         return contactListFiltered.size();
     }
 
+
+    // getFilter is the core of the app 'cause here will selected contacts by work or name
     @Override
     public Filter getFilter() {
         return new Filter() {
@@ -103,7 +105,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.MyView
 
                         // name match condition. this might differ depending on your requirement
                         // here we are looking for name or phone number match
-                        if (row.getName().toLowerCase().contains(charString.toLowerCase()) || row.getPhone().contains(/*charSequence*/charString)) {
+                        if (row.getName().toLowerCase().contains(charString.toLowerCase()) || row.getWork().contains(/*charSequence*/charString)) {
                             filteredList.add(row);
                         }
                     }

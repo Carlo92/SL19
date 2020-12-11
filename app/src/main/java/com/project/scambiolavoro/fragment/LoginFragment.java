@@ -87,7 +87,7 @@ public class LoginFragment extends Fragment {
 
         });
 
-
+// for updating release
         AppUpdater appUpdater = new AppUpdater(getContext());
         appUpdater.setUpdateFrom(UpdateFrom.GITHUB)
                 .setGitHubUserAndRepo("Carlo92", "SL19")

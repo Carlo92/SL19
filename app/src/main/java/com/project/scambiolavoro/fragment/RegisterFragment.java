@@ -171,7 +171,6 @@ public class RegisterFragment extends Fragment {
         ArrayList<String> gendercases = new ArrayList<>();
         gendercases.add("Uomo");
         gendercases.add("Donna");
-        gendercases.add(getPhone());
 
         // Set Options to gender defined earlier
         gender.setOptions(gendercases);
@@ -302,9 +301,11 @@ public class RegisterFragment extends Fragment {
             public void onClick(View v) {
               if (validateData(name, surname,
                         gender, birthDate,
-                        fromPlace, work, workExp,
+                        fromPlace, work, workExp, workPlace,
                         mail, pwd, repwd)) {
-                    sendData(name, mail, pwd);
+                    sendData(name, surname, gender, birthDate,
+                            fromPlace, work, workExp, workPlace, mobile,
+                            mail, pwd);
                 }
 
 
@@ -372,7 +373,7 @@ public class RegisterFragment extends Fragment {
 
     private boolean validateData(EditText name, EditText surname,
                                  DropDown gender, EditText birthDate,
-                                 EditText fromPlace, EditText work, EditText workExp,
+                                 EditText fromPlace, EditText work, EditText workExp, EditText workPlace,
                                  EditText mail,
                                  EditText pwd, EditText repwd) {
 
@@ -443,12 +444,27 @@ public class RegisterFragment extends Fragment {
     }
 
     //parameters must be exactly the same for  the contact
-    private void sendData(EditText name, EditText email, EditText pwd) {
 
 
-        String emailInput = email.getText().toString().trim();
-        String pwdGot = pwd.getText().toString().trim();
+    private void sendData(EditText name, EditText surname, DropDown gender,
+                          EditText birthDate, EditText fromPlace,
+                          EditText work, EditText workExp,
+                          EditText workPlace, EditText mobile, EditText email,
+                          EditText pwd) {
+
+
+        final String emailInput = email.getText().toString().trim();
+        final String pwdGot = pwd.getText().toString().trim();
         final String nameGot = name.getText().toString().trim();
+        final String surnameGot = surname.getText().toString().trim();
+        final String genderGot = gender.getText().toString().trim();
+        final String birthDateGot = birthDate.getText().toString().trim();
+        final String fromPlaceGot = fromPlace.getText().toString().trim();
+        final String workGot = work.getText().toString().trim();
+        final String workExpGot = workExp.getText().toString().trim();
+        final String workPlaceGot = workPlace.getText().toString().trim();
+        final String mailGot = email.getText().toString().trim();
+        final String mobileGot = mobile.getText().toString().trim();
         //   showProgressBar();
 
 
@@ -473,6 +489,9 @@ public class RegisterFragment extends Fragment {
                             //generate key for the user that must be unique and the same for database and photo in storage
 
 
+                            // image address
+
+
                             final StorageReference imageReference = imagesFolder.child(gid + ".jpg");
 
 
@@ -484,7 +503,9 @@ public class RegisterFragment extends Fragment {
                                         @Override
                                         public void onSuccess(Uri uri) {
 
-                                            Contact contact = new Contact(nameGot, uri.toString(), phoneGot);
+                                            Contact contact = new Contact(nameGot, surnameGot, genderGot,
+                                                    birthDateGot, fromPlaceGot, workGot,
+                                                    workExpGot, workPlaceGot, phoneGot, mailGot, uri.toString());
                                             dbRef.child(gid).setValue(contact);
                                             Intent myIntent = new Intent(getActivity(), SearchActivity.class);
                                             getActivity().startActivity(myIntent);

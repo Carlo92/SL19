@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
@@ -40,7 +39,7 @@ public class SearchActivity extends AppCompatActivity implements ContactsAdapter
     private static final String TAG = SearchActivity.class.getSimpleName();
     private RecyclerView recyclerView;
     private List<Contact> contactList;
-    private List<Contact> itemstwo = new ArrayList<>();
+    private List<Contact> tempListContact = new ArrayList<>();
     private ContactsAdapter mAdapter;
     private SearchView searchView;
     private DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
@@ -96,14 +95,16 @@ public class SearchActivity extends AppCompatActivity implements ContactsAdapter
                 Iterator<DataSnapshot> iterator = snapshotIterator.iterator();
                 while (iterator.hasNext()) {
 
+                    //take the values data of the children.
+                    //Children are the contact items and after them, the relatives values
                     DataSnapshot next = (DataSnapshot) iterator.next();
                     String name = (String) next.child("name").getValue();
                     String image = (String) next.child("image").getValue();
-                    String phone = (String) next.child("phone").getValue();
+                    String work = (String) next.child("work").getValue();
 
 
-                    Contact fromJSON = new Contact(name, image, phone);
-                    itemstwo.add(fromJSON);
+                    Contact fromJSON = new Contact(name, image, work);
+                    tempListContact.add(fromJSON);
 
                     //  Log.i(TAG, "Value = " + next.child("name").getValue());
 
@@ -112,7 +113,7 @@ public class SearchActivity extends AppCompatActivity implements ContactsAdapter
 
                 // adding contacts to contacts list*//*
                 contactList.clear();
-                contactList.addAll(itemstwo);
+                contactList.addAll(tempListContact);
 
                 // refreshing recycler view
                 mAdapter.notifyDataSetChanged();
