@@ -1,0 +1,21 @@
+{
+  "personalizations": [
+    {
+      "to": [
+        {
+          "email": "johdddn@example.com"
+        }
+      ],
+      "subject": "Hello, World!"
+    }
+  ],
+  "from": {
+    "email": "info@scambio-lavoro.com"
+  },
+  "content": [
+    {
+      "type": "text/plain",
+      "value": "Hello, World!"
+    }
+  ]
+}
